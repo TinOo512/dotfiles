@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+
+# Get the dotfiles directory's absolute path
+SCRIPT_DIR="$(cd "$(dirname "$0")"; pwd -P)"
+DOTFILES_DIR="$(dirname "$SCRIPT_DIR")"
+
+# add repos
+sudo add-apt-repository -y ppa:webupd8team/sublime-text-3
+wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+sudo sh -c 'echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list'
+sudo add-apt-repository -y ppa:webupd8team/java
+sudo add-apt-repository -y ppa:nathan-renniewaldock/flux
+sudo add-apt-repository -y ppa:indicator-multiload/stable-daily
+sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+echo "deb https://apt.dockerproject.org/repo ubuntu-xenial main" | sudo tee /etc/apt/sources.list.d/docker.list
+
+# update repo
+sudo apt-get -y --force-yes update
+
+# udpate existing packages
+#sudo apt-get -y --force-yes upgrade
+
+# install new packages through `apt-get`
+sudo apt-get -y install \
+  sublime-text-installer \
+  google-chrome-beta \
+  git \
+  oracle-java8-installer \
+  oracle-java8-set-default \
+  unity-tweak-tool \
+  skype \
+  gtk2-engines-murrine:i386 \
+  gtk2-engines-pixbuf:i386 \
+  fluxgui \
+  indicator-multiload \
+  docker-engine \
+  zsh \
+  unrar
+
+# install java 8
+#echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
+
+# gsettings
+gsettings set org.compiz.core:/org/compiz/profiles/unity/plugins/core/ hsize 2
+gsettings set org.compiz.core:/org/compiz/profiles/unity/plugins/core/ vsize 2
+
+# ensure we are using `modesetting` driver (cf. https://bugs.chromium.org/p/chromium/issues/detail?id=606152#c72)
+sudo cp ./X11/20-intel.conf /usr/share/X11/xorg.conf.d/
+
+# add the user to the docker group
+sudo usermod -aG docker $(whoami)
+
+# set `zsh` as default shell
+chsh -s /bin/zsh
+
+# set solarized gnome terminal colors
+./gnome-term/gnome-terminal-colors-solarized/set_dark.sh --skip-dircolors
+
+# set solarized dircolors colors
+ln -s $SCRIPT_DIR/gnome-term/dircolors-solarized/dircolors.ansi-dark $DOTFILES_DIR/.dir_colors/dircolors
+
+# symlink zshrc
+ln -s $SCRIPT_DIR/shell/zshrc $DOTFILES_DIR/.zshrc
+
+#symlink gitconfig
+ln -s $SCRIPT_DIR/git/gitconfig $DOTFILES_DIR/.gitconfig
