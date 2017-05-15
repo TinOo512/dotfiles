@@ -45,7 +45,7 @@ latest | stable
 ### The best way
 
 ```console
-$ curl -sL zplug.sh/installer | zsh
+$ curl -sL --proto-redir -all,https https://zplug.sh/installer | zsh
 ```
 
 If you wonder this installation, please check it out:
@@ -186,11 +186,13 @@ Finally, use `zplug install` to install your plugins and reload `.zshrc`.
 
 ### 1. Options for `zplug`
 
-| Option | Description |
-|--------|-------------|
-| `--help` | Display the help message |
-| `--version` | Display the version of zplug |
-| `--log` | Show the error log (for developer) |
+| Option          | Description |
+|-----------------|-------------|
+| `--help`        | Display the help message |
+| `--rollback`    | Rollback a failed package |
+| `--self-manage` | Self management of zplug |
+| `--version`     | Display the version of zplug |
+| `--log`         | Show the report of zplug errors |
 
 ### 2. Commands for `zplug`
 
@@ -230,7 +232,7 @@ fi
 To manage zplug itself like other packages, write the following in your `.zshrc`.
 
 ```zsh
-zplug "zplug/zplug"
+zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 ```
 
 All that's left is to run `zplug update`.
@@ -308,7 +310,7 @@ $ZPLUG_HOME
         `-- reponame1
 ```
 
-If you specify `as:command`, zplug will see the package as a command and create a symbolic link of the same name (if you want to rename it, use the `rename-to:` tag) in `$ZPLUG_HOME/bin`. Because zplug adds `$ZPLUG_HOME/bin` to the `$PATH`, you can run that command from anywhere.
+If you specify `as:command`, zplug will see the package as a command and create a symbolic link of the same name (if you want to rename it, use the `rename-to:` tag) in `$ZPLUG_BIN`. Because zplug adds `$ZPLUG_BIN` to the `$PATH`, you can run that command from anywhere.
 
 #### `ZPLUG_THREADS`
 
@@ -354,6 +356,10 @@ source ~/.zshrc_secret
 zplug "some/command", hook-build:"make && sudo make install"
 ```
 
+#### `ZPLUG_BIN`
+
+Defaults to `$ZPLUG_HOME/bin`. You can change the save destination of the command's symbolic link, e.g. `~/bin`.
+
 ### External commands
 
 zplug, like `git(1)`, supports external commands.
@@ -389,7 +395,7 @@ page](https://github.com/zplug/zplug/wiki/Migration).
 [license]: http://b4b4r07.mit-license.org
 [travis-link]: https://travis-ci.org/zplug/zplug
 [travis-badge]: https://img.shields.io/travis/zplug/zplug.svg?style=flat-square
-[latest-badge]: https://img.shields.io/badge/latest-v2.4.0-ca7f85.svg?style=flat-square
+[latest-badge]: https://img.shields.io/badge/latest-v2.4.1-ca7f85.svg?style=flat-square
 [latest-link]: https://github.com/zplug/zplug/releases/latest
 [stable-badge]: https://img.shields.io/badge/stable-v2.3.2-e9a326.svg?style=flat-square
 [stable-link]: https://github.com/zplug/zplug/releases/tag/2.3.2

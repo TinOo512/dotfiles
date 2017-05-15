@@ -308,7 +308,7 @@ $ZPLUG_HOME
         `-- reponame1
 ```
 
-`as:command` を指定したとき、zplug はパッケージをコマンドとみなし、同名のシンボリックリンクを `$ZPLUG_HOME/bin` に作成する (違う名前で作成したい場合、`rename-to:` タグを使う)。`$ZPLUG_HOME/bin` は `$PATH` に追加されるので、インストールしたコマンドはいつでもどこからでも実行可能になる。
+`as:command` を指定したとき、zplug はパッケージをコマンドとみなし、同名のシンボリックリンクを `$ZPLUG_BIN` に作成する (違う名前で作成したい場合、`rename-to:` タグを使う)。`$ZPLUG_BIN` は `$PATH` に追加されるので、インストールしたコマンドはいつでもどこからでも実行可能になる。
 
 #### `ZPLUG_THREADS`
 
@@ -354,6 +354,10 @@ source ~/.zshrc_secret
 zplug "some/command", hook-build:"make && sudo make install"
 ```
 
+#### `ZPLUG_BIN`
+
+デフォルトは `$ZPLUG_HOME/bin`。コマンドのシンボリックリンクの保存先を変更することができる。例えば `~/bin` とか。
+
 ### 外部コマンド
 
 zplug では `git(1)` のように外部コマンド機能が利用できる。
@@ -386,7 +390,7 @@ antigen や zgen、もしくは zplug v1 から移行するための情報は [z
 [license]: http://b4b4r07.mit-license.org
 [travis-link]: https://travis-ci.org/zplug/zplug
 [travis-badge]: https://img.shields.io/travis/zplug/zplug.svg?style=flat-square
-[latest-badge]: https://img.shields.io/badge/latest-v2.4.0-ca7f85.svg?style=flat-square
+[latest-badge]: https://img.shields.io/badge/latest-v2.4.1-ca7f85.svg?style=flat-square
 [latest-link]: https://github.com/zplug/zplug/releases/latest
 [stable-badge]: https://img.shields.io/badge/stable-v2.3.2-e9a326.svg?style=flat-square
 [stable-link]: https://github.com/zplug/zplug/releases/tag/2.3.2

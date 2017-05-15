@@ -12,8 +12,8 @@ __zplug::core::load::from_cache()
     local is_verbose
     zstyle -s ':zplug:core:load' 'verbose' is_verbose
 
-    # Restore default options
-    setopt monitor
+    # Default
+    # setopt monitor
 
     __zplug::core::cache::update
 
@@ -82,8 +82,7 @@ __zplug::core::load::as_plugin()
 
     # Special measure
     if [[ $repo == 'zplug/zplug' ]]; then
-        __zplug::log::write::info \
-            "In the case of zplug, don't load it exceptionally"
+        # In the case of zplug, don't load it exceptionally
         return 0
     fi
 

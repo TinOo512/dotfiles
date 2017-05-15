@@ -225,12 +225,17 @@ __zplug::sources::github::load_command()
         if (( $#rename_hash == 0 )) && [[ -n $tags[rename-to] ]]; then
             rename_hash=( $(__zplug::utils::shell::zglob \
                 "$tags[dir]/$tags[use]" \
-                "$ZPLUG_HOME/bin/$tags[rename-to]")
+                "$ZPLUG_BIN/$tags[rename-to]")
             )
         fi
     else
-        if [[ -x $tags[dir]/${repo:t} ]]; then
-            sources=( "$tags[dir]/${repo:t}"(N-.) )
+        if [[ $tags[use] == $default_tags[use] ]]; then
+            # If no $tags[use] is given by the user,
+            # automatically add repo's basename to load-path
+            # if it exists as executable file
+            if [[ -f $tags[dir]/${repo:t} ]]; then
+                sources=( "$tags[dir]/${repo:t}"(N-.) )
+            fi
         else
             if [[ $tags[use] == $default_tags[use] || $tags[from] == "gh-r" ]]; then
                 tags[use]="*(N-*)"
@@ -239,8 +244,12 @@ __zplug::sources::github::load_command()
                 __zplug::utils::shell::expand_glob "$tags[dir]/$tags[use]" "(N-.)"
             )"} )
         fi
-        dst=${${tags[rename-to]:+$ZPLUG_HOME/bin/$tags[rename-to]}:-"$ZPLUG_HOME/bin"}
-        for src ("$sources[@]") rename_hash+=("$src" "$dst")
+        dst=${${tags[rename-to]:+$ZPLUG_BIN/$tags[rename-to]}:-"$ZPLUG_BIN"}
+        for src in "$sources[@]"
+        do
+            chmod 755 "$src"
+            rename_hash+=("$src" "$dst")
+        done
     fi
     for src in "${(k)rename_hash[@]}"
     do

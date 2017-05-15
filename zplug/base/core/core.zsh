@@ -95,7 +95,7 @@ __zplug::core::core::prepare()
     # Add to the PATH
     path=(
     ${ZPLUG_ROOT:+"$ZPLUG_ROOT/bin"}
-    ${ZPLUG_HOME:+"$ZPLUG_HOME/bin"}
+    ${ZPLUG_BIN:+"$ZPLUG_BIN"}
     "$path[@]"
     )
 
@@ -144,7 +144,8 @@ __zplug::core::core::prepare()
     # Release zplug variables and export
     __zplug::core::core::variable || return 1
 
-    mkdir -p "$ZPLUG_HOME"/{,bin,log}
+    mkdir -p "$ZPLUG_HOME"/{,log}
+    mkdir -p "$ZPLUG_BIN"
     mkdir -p "$ZPLUG_CACHE_DIR"
     mkdir -p "$ZPLUG_REPOS"
 
@@ -171,10 +172,11 @@ __zplug::core::core::variable()
 
     typeset -gx    ZPLUG_ERROR_LOG=${ZPLUG_ERROR_LOG:-$ZPLUG_HOME/.error_log}
 
+    typeset -gx    ZPLUG_BIN=${ZPLUG_BIN:-$ZPLUG_HOME/bin}
     typeset -gx    ZPLUG_CACHE_DIR=${ZPLUG_CACHE_DIR:-$ZPLUG_HOME/cache}
     typeset -gx    ZPLUG_REPOS=${ZPLUG_REPOS:-$ZPLUG_HOME/repos}
 
-    typeset -gx    _ZPLUG_VERSION="2.4.0"
+    typeset -gx    _ZPLUG_VERSION="2.4.1"
     typeset -gx    _ZPLUG_URL="https://github.com/zplug/zplug"
     typeset -gx    _ZPLUG_OHMYZSH="robbyrussell/oh-my-zsh"
     typeset -gx    _ZPLUG_PREZTO="sorin-ionescu/prezto"
@@ -211,6 +213,8 @@ __zplug::core::core::variable()
     "skip_local"     16
     "not_git_repo"   17
     "not_on_branch"  18
+    "detached_head"  18
+    "revision_lock"  19
     )
 
     typeset -gx -A _zplug_log _zplug_build_log _zplug_load_log
@@ -244,8 +248,10 @@ __zplug::core::core::variable()
     "defer_3_plugin" "$ZPLUG_CACHE_DIR/defer_3_plugin.zsh"
     )
 
-    typeset -gx -a _zplug_checkout_locks
-    _zplug_checkout_locks=()
+    typeset -gx -A _zplug_lock
+    _zplug_lock=(
+    "job" "$ZPLUG_HOME/log/job.lock"
+    )
 
     if (( $+ZPLUG_SHALLOW )); then
         __zplug::io::print::f \
