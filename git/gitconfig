@@ -1,6 +1,6 @@
 [user]
 	name = TinOo512
-	email = etienne.dedieuleveult@gmail.com
+	email = etienne@august.com
 [color]
 	# Enable colors in color-supporting terminals
 	ui = auto
@@ -21,6 +21,7 @@
 [core]
 	# Don't paginate output by default
 	pager = cat
+    editor = nano
     #
 	# If you want to use Sublime Text 2's subl wrapper:
 	# editor = subl -w
