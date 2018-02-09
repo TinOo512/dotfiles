@@ -11,11 +11,20 @@ DOTFILES_DIR="$(dirname "$SCRIPT_DIR")"
 brew cask install sublime-text \
   google-chrome \
   flux \
-  skype
+  paste \
+  skype \
+  docker \
+  intellij-idea \
+  robomongo \
+  ngrok
 
 # install new packages through `brew`
 brew install zsh \
-  git
+  git \
+  mas \
+  tmux \
+  p7zip \
+  nginx
 
 # set `zsh` as default shell
 #chsh -s /usr/local/bin/zsh
