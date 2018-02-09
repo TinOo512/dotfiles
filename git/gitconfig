@@ -4,6 +4,12 @@
 [color]
 	# Enable colors in color-supporting terminals
 	ui = auto
+[color "diff"]
+	new = green bold
+[color "status"]
+	updated = green bold
+[color "branch"]
+	current = green bold
 [alias]
 	st = status
 	ci = commit
